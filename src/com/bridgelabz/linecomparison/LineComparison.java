@@ -1,7 +1,5 @@
 package com.bridgelabz.linecomparison;
 
-import java.util.Objects;
-
 public class LineComparison {
 
     public static void main(String[] args) {
@@ -26,11 +24,16 @@ public class LineComparison {
         System.out.println("Length of Line 1: " + lineLength1);
         System.out.println("Length of Line 2: " + lineLength2);
 
-        // Check equality of Line 1 and Line 2
-        if (isEqual(lineLength1, lineLength2)) {
+        // Compare the lengths using compareTo
+        int result = compareLengths(lineLength1, lineLength2);
+
+        // Print the result based on the comparison
+        if (result == 0) {
             System.out.println("Both lines are equal.");
+        } else if (result > 0) {
+            System.out.println("Line 1 is greater than Line 2.");
         } else {
-            System.out.println("Lines are not equal.");
+            System.out.println("Line 1 is less than Line 2.");
         }
     }
 
@@ -39,9 +42,8 @@ public class LineComparison {
         return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 
-    // Function to check equality of two lengths
-    private static boolean isEqual(double length1, double length2) {
-        // Using Objects.equals to handle NaN cases
-        return Objects.equals(length1, length2);
+    // Function to compare lengths using compareTo
+    private static int compareLengths(double length1, double length2) {
+        return Double.compare(length1, length2);
     }
 }
