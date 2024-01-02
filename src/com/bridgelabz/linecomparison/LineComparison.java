@@ -1,31 +1,95 @@
 package com.bridgelabz.linecomparison;
 
-public class LineComparison {
+import java.util.Objects;
 
+class Point {
+    private double x;
+    private double y;
+
+    public Point(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    // Getter methods for x and y
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    // Override equals method for Point class
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Point point = (Point) o;
+        return Double.compare(point.x, x) == 0 && Double.compare(point.y, y) == 0;
+    }
+
+    // Override hashCode method for Point class
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
+    }
+}
+
+class Line {
+    private Point startPoint;
+    private Point endPoint;
+
+    public Line(Point startPoint, Point endPoint) {
+        this.startPoint = startPoint;
+        this.endPoint = endPoint;
+    }
+
+    // Getter methods for startPoint and endPoint
+    public Point getStartPoint() {
+        return startPoint;
+    }
+
+    public Point getEndPoint() {
+        return endPoint;
+    }
+
+    // Calculate the length of the line using the distance formula
+    public double calculateLength() {
+        double x1 = startPoint.getX();
+        double y1 = startPoint.getY();
+        double x2 = endPoint.getX();
+        double y2 = endPoint.getY();
+        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    }
+
+    // Override compareTo method for Line class
+    public int compareTo(Line other) {
+        return Double.compare(this.calculateLength(), other.calculateLength());
+    }
+}
+
+public class LineComparison {
     public static void main(String[] args) {
         System.out.println("Welcome to Line Comparison Computation.");
 
-        // Coordinates of the first point for Line 1
-        double x1Line1 = 1.0;
-        double y1Line1 = 2.0;
-        double x2Line1 = 4.0;
-        double y2Line1 = 6.0;
+        // Creating points
+        Point point1 = new Point(1.0, 2.0);
+        Point point2 = new Point(4.0, 6.0);
 
-        // Coordinates of the first point for Line 2
-        double x1Line2 = 1.0;
-        double y1Line2 = 2.0;
-        double x2Line2 = 4.0;
-        double y2Line2 = 6.0;
+        // Creating lines using points
+        Line line1 = new Line(point1, point2);
+        Line line2 = new Line(new Point(1.0, 2.0), new Point(4.0, 6.0));
 
         // Calculate the length of Line 1 and Line 2
-        double lineLength1 = calculateLineLength(x1Line1, y1Line1, x2Line1, y2Line1);
-        double lineLength2 = calculateLineLength(x1Line2, y1Line2, x2Line2, y2Line2);
+        double lineLength1 = line1.calculateLength();
+        double lineLength2 = line2.calculateLength();
 
         System.out.println("Length of Line 1: " + lineLength1);
         System.out.println("Length of Line 2: " + lineLength2);
 
         // Compare the lengths using compareTo
-        int result = compareLengths(lineLength1, lineLength2);
+        int result = line1.compareTo(line2);
 
         // Print the result based on the comparison
         if (result == 0) {
@@ -35,15 +99,5 @@ public class LineComparison {
         } else {
             System.out.println("Line 1 is less than Line 2.");
         }
-    }
-
-    // Function to calculate the length of a line
-    private static double calculateLineLength(double x1, double y1, double x2, double y2) {
-        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-    }
-
-    // Function to compare lengths using compareTo
-    private static int compareLengths(double length1, double length2) {
-        return Double.compare(length1, length2);
     }
 }
