@@ -4,17 +4,19 @@ public class LineComparisonProgram {
 
     public static void main(String[] args) {
         System.out.println("Welcome to Line Comparison Computation Program on Master Branch");
- 
+
         performLineModeling();
-  
+
         performLineEqualityCheck();
 
         performLineComparison();
+
+        performOOPLineComparison();
     }
 
     // Method to perform line modeling and length calculation 
     private static void performLineModeling() {
-        // Coordinates of the two points for UC-1
+        // Coordinates of the two points 
         double x1 = 1.0;
         double y1 = 2.0;
         double x2 = 4.0;
@@ -90,15 +92,26 @@ public class LineComparisonProgram {
         }
     }
 
+    // Method to perform line comparison using OOP concepts
+    private static void performOOPLineComparison() {
+        // Create instances of Line for Line 3 and Line 4
+        Line line3 = new Line(1.0, 2.0, 4.0, 6.0);
+        Line line4 = new Line(2.0, 4.0, 6.0, 8.0);
+
+        // Performs line comparison using the compareTo method
+        int comparisonResult = line3.compareTo(line4);
+
+        System.out.println("Line 3 compared to Line 4: " + getComparisonResultString(comparisonResult));
+    }
+
     // Inner class representing a Line
     private static class Line implements Comparable<Line> {
-        double x1, y1, x2, y2;
+        Point startPoint;
+        Point endPoint;
 
         public Line(double x1, double y1, double x2, double y2) {
-            this.x1 = x1;
-            this.y1 = y1;
-            this.x2 = x2;
-            this.y2 = y2;
+            this.startPoint = new Point(x1, y1);
+            this.endPoint = new Point(x2, y2);
         }
 
         @Override
@@ -107,19 +120,39 @@ public class LineComparisonProgram {
             if (obj == null || getClass() != obj.getClass()) return false;
 
             Line line = (Line) obj;
-            return Double.compare(line.x1, x1) == 0 &&
-                    Double.compare(line.y1, y1) == 0 &&
-                    Double.compare(line.x2, x2) == 0 &&
-                    Double.compare(line.y2, y2) == 0;
+            return startPoint.equals(line.startPoint) && endPoint.equals(line.endPoint);
         }
 
         @Override
         public int compareTo(Line otherLine) {
             // Compare lines based on their lengths
-            double lengthThisLine = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-            double lengthOtherLine = Math.sqrt(Math.pow(otherLine.x2 - otherLine.x1, 2) + Math.pow(otherLine.y2 - otherLine.y1, 2));
+            double lengthThisLine = calculateLength();
+            double lengthOtherLine = otherLine.calculateLength();
 
             return Double.compare(lengthThisLine, lengthOtherLine);
+        }
+
+        private double calculateLength() {
+            return Math.sqrt(Math.pow(endPoint.x - startPoint.x, 2) + Math.pow(endPoint.y - startPoint.y, 2));
+        }
+    }
+
+    // Inner class representing a Point
+    private static class Point {
+        double x, y;
+
+        public Point(double x, double y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (obj == null || getClass() != obj.getClass()) return false;
+
+            Point point = (Point) obj;
+            return Double.compare(point.x, x) == 0 && Double.compare(point.y, y) == 0;
         }
     }
 }
